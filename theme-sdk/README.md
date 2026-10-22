@@ -33,7 +33,6 @@ Core errors and notifications in snapshots are translated at display time and up
 - [Theme protocol and localized configuration](https://llleixx.github.io/picloom/development/themes.html)
 - [Schema reference](https://llleixx.github.io/picloom/development/schema.html)
 - [Messages and form hints](https://llleixx.github.io/picloom/development/package-localization.html)
-- [Tool maintenance](https://llleixx.github.io/picloom/development/theme-tooling-maintenance.html)
 
 ## Development tools / 开发工具
 

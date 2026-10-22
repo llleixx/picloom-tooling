@@ -1,32 +1,21 @@
 # @picloom/create-plugin
 
-Create a standalone Picloom plugin project with Bun 1.4.3+. No main repository
-checkout, Node.js or npm CLI is required.
-
-Create a project:
+Create a standalone Picloom date-path plugin with Bun 1.4.3+.
 
 ```sh
 bun create @picloom/plugin@0.1.1 ./my-plugin
+cd my-plugin
+bun install
+bun run typecheck
+bun run build
 ```
 
-The destination must not exist; its parent must exist. `--help` prints usage.
-The tool copies a date path plugin template and prints next steps. It does not
-install dependencies, start a service, or publish anything. Follow the generated
-README to edit, build and install the plugin.
+The target directory must not exist and its parent must exist. Follow the generated README to edit and install the ZIP. The starter generates paths using UTC dates. Type checking and building are separate commands.
 
-See [quick start](https://llleixx.github.io/picloom/development/plugin-tooling.html)
-for the full workflow and optional local tarball usage. Package
-maintainers use [tool maintenance](https://github.com/llleixx/picloom/blob/main/docs/development/plugin-tooling-maintenance.md).
+[Plugin tutorial](https://llleixx.github.io/picloom/development/plugin-tooling.html)
 
 ## 中文
 
-使用 Bun 1.4.3+ 创建独立插件项目，无需主仓库、Node.js 或 npm CLI。
-使用上方命令创建项目，完整流程与可选本地压缩包用法见
-[快速开始](https://llleixx.github.io/picloom/development/plugin-tooling.html#本地压缩包)。
+使用 Bun 1.4.3+ 创建独立日期路径插件。按上方命令创建工程、安装依赖、检查类型并构建。目标目录必须不存在，父目录必须存在。
 
-目标目录必须不存在，父目录必须存在。工具只复制日期路径插件模板并提示下一步，
-不安装依赖、不启动服务、不发布代码。生成后按项目内 README 修改、构建和安装插件。
-
-Generated projects use `@picloom/plugin-sdk` for contracts and runtime helpers, and `@picloom/plugin-tools` for ZIP builds. No build script is copied. Use creator 0.1.1, tools 0.1.0 and plugin SDK 0.1.0.
-
-生成项目依赖 SDK 与开发工具包，不复制构建实现；使用脚手架 0.1.1、工具 0.1.0 和插件 SDK 0.1.0 的 npm 精确版本。
+初始插件按 UTC 日期生成路径。类型检查与构建分别执行；修改文件和安装 ZIP 的步骤见生成项目中的 README。

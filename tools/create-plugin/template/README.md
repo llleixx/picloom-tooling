@@ -1,8 +1,6 @@
 # My Picloom plugin
 
-A standalone plugin project using Bun 1.4.3+ and Picloom plugin API 1. Use a
-separate Picloom 0.1.0 development test instance for installation and uploads.
-Node.js and npm CLI are not required.
+A date-path plugin project for Bun 1.4.3+.
 
 ## Develop
 
@@ -12,60 +10,30 @@ bun run typecheck
 bun run build
 ```
 
-Commit the generated `bun.lock`. To check types without building, run
-`bun run typecheck`. Type checking and ZIP building are separate commands under Bun. Builds call `@picloom/plugin-tools`; no build implementation is copied into the project.
+- `plugin.json`: set your plugin ID and version.
+- `src/index.ts`: edit localized names, configuration and path generation. The starter uses UTC dates and accepts empty configuration `{}`.
+- `package.json`: dependencies and commands. Type checking runs separately from builds.
+- `dist/<plugin-id>-<version>.zip`: the built plugin, containing the manifest and bundled entry.
 
-- `plugin.json`: plugin ID, version, kind and API version. Replace the
-  generated `example.*` ID with your own stable ID before sharing.
-- `src/index.ts`: localized display text (`defaultLocale` and `messages`), configuration and implementation. It reads identity fields from
-  the manifest and initially generates UTC date paths. It omits `configSchema`
-  because it has no custom configuration; the host accepts only `{}`.
-- `package.json`: development dependencies and commands; its version is not the
-  plugin version. The project is private to prevent accidental npm publication.
-- `dist/<plugin-id>-<version>.zip`: build output, containing `plugin.json` and
-  bundled `index.js` at the ZIP root. No system `zip` command is required.
+Builds load the entry, so keep module-level code free of external side effects. Use `services.images.sharp` for runtime image processing; the Sharp dependency supplies development types.
 
-Build loads your entry to check its identity, so keep module top-level code free
-of external side effects. Sharp is a development dependency for SDK types;
-use `services.images.sharp` at runtime. The template bundles JavaScript only;
-extra assets and native modules require explicit packaging.
+## Install
 
-## Install and update
+As Owner, upload the ZIP in Picloom plugin management. Select the plugin in an upload profile with an available storage group, then upload an image and open its link.
 
-1. Sign in to the test instance as Owner and upload the ZIP in plugin management.
-2. Review the identity, confirm trust, and check that the plugin loaded.
-3. Select your path plugin in a test upload profile with an available storage group.
-4. Upload a PNG and open its returned link. The starter path contains the UTC date
-   and file ID, plus the profile's public prefix.
-5. After code changes, increment `plugin.json`'s version, rebuild and install.
-   In the profile choose the new version, preview and apply the upgrade.
+After changes, increment `plugin.json.version`, rebuild and install. Select the new version in the upload profile and apply the migration preview; existing configurations do not switch automatically.
 
-Installation does not activate a plugin automatically. Same-version replacement
-and source hot reload are not supported. See [packaging and upgrades](https://llleixx.github.io/picloom/development/plugin-release.html)
-for configuration migrations and dependency restrictions.
-
-For other plugin types and adapting the examples, follow
-[quick start](https://llleixx.github.io/picloom/development/plugin-tooling.html#使用教程示例).
-See [host services](https://llleixx.github.io/picloom/development/plugin-services.html)
-for configuration, secrets and state, and [errors and concurrency](https://llleixx.github.io/picloom/development/plugin-errors.html)
-for retries, cancellation and instance lifecycle.
+[Plugin tutorial](https://llleixx.github.io/picloom/development/plugin-tooling.html) · [Packaging and upgrades](https://llleixx.github.io/picloom/development/plugin-release.html)
 
 ## 中文
 
-本项目只需 Bun 1.4.3+。修改 `plugin.json` 的身份信息和 `src/index.ts` 的实现，
-执行 `bun install`、`bun run build`，将生成的 `bun.lock` 提交到自己的插件仓库。
-类型检查单独运行 `bun run typecheck`；构建调用 `@picloom/plugin-tools` 输出 `dist/<插件ID>-<版本>.zip`，无需系统 `zip` 命令。
+使用 Bun 1.4.3+，依次运行上方安装、类型检查和构建命令。
 
-用 Owner 账号在独立测试实例中安装 ZIP，确认加载成功后，在上传配置中选择插件并
-关联可用存储组。上传 PNG，确认日期路径和公开链接。改代码后增加清单版本，重新
-构建安装，再选择新版本、预览并应用升级；安装新版不会自动切换已有配置。
+- `plugin.json`：修改插件 ID 与版本。
+- `src/index.ts`：修改多语言名称、配置与路径生成。初始实现使用 UTC 日期，接受空配置 `{}`。
+- `package.json`：依赖与命令，类型检查和构建分别执行。
+- `dist/<插件ID>-<版本>.zip`：包含清单与打包入口的安装包。
 
-模板没有自定义配置项，因此省略 `configSchema`，宿主只接受空配置 `{}`；添加配置项时再声明对象 Schema。
+构建会加载入口，避免在模块顶层执行远端操作。图片处理使用宿主的 `services.images.sharp`；Sharp 开发依赖用于类型检查。
 
-名称和简介通过 `nameKey/descriptionKey` 引用入口的 `messages` 字典，`defaultLocale` 指定内容默认语言。
-入口从清单读取身份字段；`package.json` 的版本不是插件版本。构建会加载入口，
-不要在模块顶层执行远端操作。Sharp 的开发依赖提供类型，运行时使用宿主实例。
-其他类型和完整接口见上方文档链接。
-
-The current creator/tool versions are not yet published; use their local tarballs for validation.
-当前脚手架和工具版本尚未发布，请使用本地压缩包验证。
+以 Owner 在插件管理中安装 ZIP，在上传配置中选择插件并关联可用存储组，上传图片后打开返回链接。更新时增加清单版本、重新构建安装，再在上传配置中选择新版并应用迁移预览；已有配置不会自动切换。

@@ -26,11 +26,6 @@ requests and other external side effects. This is not a sandbox, and the host st
 validates packages independently on installation. No programmatic API, simulator,
 watch service or custom configuration is provided.
 
-The SDK owns public protocols and runtime helpers; the creator generates projects;
-this package owns compilation and ZIP creation. Install the exact version `@picloom/plugin-tools@0.1.0`.
-For local validation, run `bun pm pack` in this directory after installing the main
-repository's dependencies. It builds the CLI automatically and does not publish.
-
 ## 中文
 
 `@picloom/plugin-sdk` 保留公共协议和通用运行时辅助函数；脚手架只生成初始项目；
@@ -41,5 +36,4 @@ repository's dependencies. It builds the CLI automatically and does not publish.
 
 `src/index.ts` → `index.js` 是工具约定，不收紧宿主协议。Sharp 运行时使用宿主实例，
 额外构建输出和未打包普通依赖被拒绝。构建会执行入口，不是沙箱，顶层代码应避免外部副作用。
-宿主独立执行安装校验。本次没有模拟宿主、热更新、额外资源打包或配置扩展体系。
-常规安装使用 npm 精确版本 0.1.0；本地打包仅用于验证源码修改。
+宿主独立执行安装校验。工具提供构建 CLI，不提供模拟宿主、热更新或额外资源打包。

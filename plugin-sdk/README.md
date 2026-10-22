@@ -1,7 +1,8 @@
 # @picloom/plugin-sdk
 
 Public TypeScript interfaces and runtime helpers for Picloom plugins. Maintained
-in the Picloom repository; plugin authors do not need to clone that repository.
+in the independent [picloom-tooling](https://github.com/llleixx/picloom-tooling)
+workspace; plugin authors do not need an application or tooling checkout.
 
 Install from npm with Bun:
 
@@ -21,9 +22,6 @@ Use the host's `services.images.sharp` at runtime. Install Sharp as a developmen
 dependency for its public types; do not bundle a second native runtime. Bundle
 SDK runtime helpers with the plugin. Picloom does not install dependencies from ZIPs.
 
-SDK 0.1.0 targets plugin API 1 and current Picloom 0.1.0 development source.
-Use Bun 1.4.3+ and pin dependencies. SDK, plugin and API versions are independent.
-
 ## Documentation
 
 - [Quick start](https://llleixx.github.io/picloom/development/plugin-tooling.html)
@@ -37,8 +35,7 @@ Use Bun 1.4.3+ and pin dependencies. SDK, plugin and API versions are independen
 本包提供插件类型和辅助函数，不包含 Picloom 服务。通过 npm 安装，开发流程见
 [快速开始](https://llleixx.github.io/picloom/development/plugin-tooling.html)。
 
-安装和导入方式见上方示例。使用 Bun 1.4.3+；SDK 0.1.0对应 API 1 和当前
-Picloom 0.1.0 开发源码。SDK 版本、插件版本及接口版本分别管理。
+安装和导入方式见上方示例，使用 Bun 1.4.3+。
 
 运行时使用 `services.images.sharp`；Sharp 开发依赖用于类型检查，不将另一套原生库打入插件。
 SDK 辅助函数随插件打包，Picloom 不会安装 ZIP 中声明的依赖。插件以 ZIP 分发，无需发布到 npm。

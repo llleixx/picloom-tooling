@@ -14,7 +14,19 @@ SDKs, build/preview tools and project generators for Picloom extension authors. 
 | `@picloom/create-plugin` | `tools/create-plugin/` | Generate a standalone plugin |
 | `@picloom/create-theme` | `tools/create-theme/` | Generate a standalone theme |
 
-The application, built-ins, default theme, protocol examples and host integration tests remain in `picloom`. Optional official extensions live in `picloom-extensions`. The theme generator owns `tools/create-theme/template/`; it no longer copies the application's default theme. Generated `dist/` files must not be edited.
+## Create an extension
+
+Use the npm creators directly; no checkout of this repository is required:
+
+```sh
+bun create @picloom/plugin@0.1.1 ./my-plugin
+# Or create a theme
+bun create @picloom/theme@0.1.1 ./my-theme
+```
+
+Enter the generated directory and run `bun install`, then `bun run typecheck` and `bun run build` separately. Themes also support `bun run dev`.
+
+[Plugin tutorial (中文)](https://llleixx.github.io/picloom/development/plugin-tooling.html) · [Theme tutorial (中文)](https://llleixx.github.io/picloom/development/theme-tooling.html) · [Application](https://github.com/llleixx/picloom) · [Official extensions](https://github.com/llleixx/picloom-extensions)
 
 ## Develop
 
@@ -29,46 +41,14 @@ bun test ./tests
 
 SDKs and tools have independent package versions. Workspace references are development dependencies; distributed tools bundle their shared implementation. Theme tools keep Vite as a peer dependency. Theme SDK remains type-only and does not pull in plugin SDK or Bun types.
 
-## Registry dependencies and optional local integration
+## Local integration
 
-The application, official extensions and generated projects use exact npm versions by default. Install with `bun install --frozen-lockfile`; no sibling tooling checkout is required. The following sync workflow is only for testing unpublished source changes.
-
-Keep the three repositories beside one another, or pass explicit target paths:
+To test tooling source changes, run from this repository:
 
 ```sh
-cd /root/projects/picloom-tooling
-bun install --frozen-lockfile
 bun run dev:sync -- ../picloom ../picloom-extensions
 ```
 
-The command builds and packs all packages, copies referenced tarballs into each consumer's ignored `.local-packages/`, rewrites matching dependencies in the root and declared workspaces, and runs `bun install`. Filenames include a content hash so changing bytes cannot accidentally reuse the lockfile's previous tarball integrity. It updates manifests and lockfiles intentionally; it never publishes, commits, deletes data or restarts the host. Re-run it after changing SDK or tool code. It also accepts a generated plugin/theme project as a target. No source symlinks or cross-repository source imports are required.
+This builds local packages, updates consumer dependencies and installs them. You can also pass a standalone plugin or theme project. Afterwards, run `bun run dev:registry -- <target>` to restore npm dependencies, then `bun install` in the target to update its lockfile.
 
-Local sync temporarily creates file dependencies. Tarballs are ignored; do not use those manifests for distribution CI or Docker builds. Docker installs registry dependencies only.
-
-After local validation, ensure the intended versions are available on npm, run `bun run dev:registry -- ../picloom ../picloom-extensions`, then run `bun install` in each consumer and verify clean installs. `dev:registry` only rewrites manifests; it does not publish. Already published versions cannot be replaced.
-
-To test changes to creator source before publishing them:
-
-```sh
-bun tools/create-plugin/index.js /tmp/my-plugin
-# Or: bun tools/create-theme/index.js /tmp/my-theme (run build first)
-bun run dev:sync -- /tmp/my-plugin
-cd /tmp/my-plugin
-bun run typecheck
-bun run build
-```
-
-Host integration checks run from `picloom`, using isolated temporary data:
-
-```sh
-bun run typecheck
-bun test ./tests
-bun run test:plugin-tooling
-bun run test:theme-tooling
-```
-
-The last two explicitly pack the sibling tooling checkout, install generated projects outside the repositories, and test actual host installation. They need dependency download access; theme checks also need Playwright Chromium. Set `PICLOOM_TOOLING_DIR` to use a non-sibling checkout. Host protocol examples use the installed public SDK and plugin-tools packages. After updating a running preview, build its frontend and restart `picloom-dev` as needed; never run tests against preview data.
-
-## Publishing
-
-There is no automatic publication. Inspect package contents, validate standalone consumers, bump versions when published bytes change, and publish only with explicit authorization. Build order is package-rules and SDKs → tools → creators. Publish dependencies before consumers and update template versions after their dependencies are available. Registry versions in generated templates must not contain workspace or local file dependencies.
+See [plugin tool maintenance (中文)](https://llleixx.github.io/picloom/development/plugin-tooling-maintenance.html) and [theme tool maintenance (中文)](https://llleixx.github.io/picloom/development/theme-tooling-maintenance.html).

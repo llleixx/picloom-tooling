@@ -28,12 +28,6 @@ These are tool conventions, not restrictions on the public theme protocol.
 Vue/React/Tailwind plugins belong to the theme project. No programmatic exports,
 custom tool configuration or plugin system are provided.
 
-Maintainers build from the independent `picloom-tooling` workspace with `bun run build`.
-
-The SDK supplies type contracts; the creator generates projects; this package
-owns the shared tools. Build-time shared helpers are bundled, with no dependency
-on a Picloom source checkout in the installed package.
-
 ## 中文
 
 `@picloom/theme-sdk` 负责协议类型，`@picloom/create-theme` 负责生成初始工程，
@@ -43,7 +37,4 @@ on a Picloom source checkout in the installed package.
 开发和产物预览分别使用 `picloom-theme dev`、`picloom-theme preview`，支持 `--port`。
 配置只在首次启动时生成，保留已有 `dev/config.json`。上传、登录均为模拟，不能代替真实宿主验证。
 构建使用 `picloom-theme build`，资源整理和包校验统一维护；宿主仍独立执行安装校验。
-上述标准目录和单入口是本工具的工程约定，不是主题协议限制。本次不扩展多入口或自定义构建器。
-
-维护时在 `picloom-tooling` 仓库运行 `bun install --frozen-lockfile`，再运行 `bun run build`，按依赖顺序构建公共规则与工具。
-本地 `bun pm pack` 自动构建工具，不发布。消费项目使用 npm 精确版本 0.1.0。
+上述标准目录和单入口是本工具的工程约定，不是主题协议限制；工具使用主题自己的 Vite 配置。
