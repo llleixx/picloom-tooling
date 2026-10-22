@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "Preserve",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "types": [
+      "bun"
+    ]
+  },
+  "include": [
+    "plugin-sdk/*.ts",
+    "theme-sdk/*.ts",
+    "package-rules/*.ts",
+    "tools/*/src/**/*.ts",
+    "tools/*/prepare.ts",
+    "scripts/**/*.ts",
+    "tests/**/*.ts"
+  ]
+}

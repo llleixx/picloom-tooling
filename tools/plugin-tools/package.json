@@ -1,0 +1,34 @@
+{
+  "name": "@picloom/plugin-tools",
+  "version": "0.1.0",
+  "type": "module",
+  "license": "MIT",
+  "description": "Build and ZIP packaging for Picloom plugins",
+  "bin": {
+    "picloom-plugin": "./dist/cli.js"
+  },
+  "exports": {},
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "bun": ">=1.4.3"
+  },
+  "scripts": {
+    "build": "bun prepare.ts",
+    "prepack": "bun run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/llleixx/picloom-tooling.git",
+    "directory": "tools/plugin-tools"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "fflate": "0.8.2"
+  }
+}

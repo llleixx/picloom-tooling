@@ -1,0 +1,30 @@
+{
+  "name": "picloom-tooling",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "workspaces": [
+    "plugin-sdk",
+    "theme-sdk",
+    "package-rules",
+    "tools/*"
+  ],
+  "scripts": {
+    "build": "bun run build:rules && bun run build:plugin-sdk && bun run build:plugin-tools && bun run build:theme-tools && bun run build:create-theme",
+    "build:rules": "bun run --cwd package-rules build",
+    "build:plugin-sdk": "bun run --cwd plugin-sdk build",
+    "build:plugin-tools": "bun run --cwd tools/plugin-tools build",
+    "build:theme-tools": "bun run --cwd tools/theme-tools build",
+    "build:create-theme": "bun run --cwd tools/create-theme build",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test ./tests",
+    "dev:sync": "bun scripts/sync.ts",
+    "dev:registry": "bun scripts/sync.ts --registry"
+  },
+  "devDependencies": {
+    "@types/bun": "1.3.10",
+    "typescript": "5.9.3",
+    "vite": "8.3.4",
+    "@picloom/package-rules": "workspace:*"
+  }
+}
