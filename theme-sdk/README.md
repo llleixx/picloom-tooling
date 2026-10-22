@@ -1,8 +1,8 @@
 # @picloom/theme-sdk
 
 TypeScript contracts for trusted Picloom home and login themes.
-Create a project with `bun create @picloom/theme@0.1.1 ./my-theme`, or install
-the types with `bun add --dev @picloom/theme-sdk@0.1.1`.
+Create a project with `bun create @picloom/theme@0.1.2 ./my-theme`, or install
+the types with `bun add --dev @picloom/theme-sdk@0.1.2`.
 
 ```ts
 import type { ThemeContext } from "@picloom/theme-sdk";
@@ -42,4 +42,4 @@ generates a project using both packages. Framework plugins remain in the theme's
 Vite configuration; no development tools are bundled into the theme.
 
 SDK 仅维护主题与宿主之间的公共类型协议。模拟预览、构建和 ZIP 打包由
-`@picloom/theme-tools` 统一维护，脚手架负责生成项目。消费项目使用 `@picloom/theme-sdk@0.1.1`，无需引用本地源码或压缩包。
+`@picloom/theme-tools` 统一维护，脚手架负责生成项目。消费项目使用 `@picloom/theme-sdk@0.1.2`，无需引用本地源码或压缩包。

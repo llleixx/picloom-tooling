@@ -7,7 +7,7 @@ workspace; plugin authors do not need an application or tooling checkout.
 Install from npm with Bun:
 
 ```sh
-bun add --dev @picloom/plugin-sdk@0.1.0 sharp@0.34.5
+bun add --dev @picloom/plugin-sdk@0.1.1 sharp@0.34.5
 ```
 
 ```ts

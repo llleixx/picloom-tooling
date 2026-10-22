@@ -3,7 +3,7 @@
 Create a standalone Picloom Vue 3 theme with Bun 1.4.3+.
 
 ```sh
-bun create @picloom/theme@0.1.1 ./my-theme
+bun create @picloom/theme@0.1.2 ./my-theme
 cd my-theme
 bun install
 bun run dev
