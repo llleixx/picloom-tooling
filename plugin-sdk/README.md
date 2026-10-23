@@ -35,7 +35,7 @@ SDK runtime helpers with the plugin. Picloom does not install dependencies from 
 本包提供插件类型和辅助函数，不包含 Picloom 服务。通过 npm 安装，开发流程见
 [快速开始](https://llleixx.github.io/picloom/development/plugin-tooling.html)。
 
-安装和导入方式见上方示例，使用 Bun 1.4.3+。
+安装和导入方式见上方示例，使用 Bun 1.4.4+。
 
 运行时使用 `services.images.sharp`；Sharp 开发依赖用于类型检查，不将另一套原生库打入插件。
 SDK 辅助函数随插件打包，Picloom 不会安装 ZIP 中声明的依赖。插件以 ZIP 分发，无需发布到 npm。

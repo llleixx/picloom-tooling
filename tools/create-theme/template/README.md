@@ -1,6 +1,6 @@
 # Picloom theme / 主题开发
 
-A Vue 3 theme for Picloom home and login pages. Requires Bun 1.4.3+.
+A Vue 3 theme for Picloom home and login pages. Requires Bun 1.4.4+.
 
 ## Develop
 
@@ -35,7 +35,7 @@ Install `dist/<theme-id>-<version>.zip` as Owner in Picloom's Themes page, confi
 
 ## 中文
 
-使用 Bun 1.4.3+。运行 `bun install` 和 `bun run dev`，打开 `http://127.0.0.1:5173/`；可用 `--port 5174` 更换端口。面板模拟页面、语言、外观、登录与上传状态。
+使用 Bun 1.4.4+。运行 `bun install` 和 `bun run dev`，打开 `http://127.0.0.1:5173/`；可用 `--port 5174` 更换端口。面板模拟页面、语言、外观、登录与上传状态。
 
 - `theme.json`：主题 ID、版本、多语言文案与配置 Schema。
 - `src/Page.vue`、`src/style.css`：页面与样式，支持热更新。

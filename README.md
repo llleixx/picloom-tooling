@@ -30,7 +30,7 @@ Enter the generated directory and run `bun install`, then `bun run typecheck` an
 
 ## Develop
 
-Use Linux Bun 1.4.3+. From this repository:
+Use Linux Bun 1.4.4+. From this repository:
 
 ```sh
 bun install --frozen-lockfile

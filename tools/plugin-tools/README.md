@@ -1,6 +1,6 @@
 # @picloom/plugin-tools
 
-Build Picloom plugins with Bun 1.4.3+. The only public interface is the CLI:
+Build Picloom plugins with Bun 1.4.4+. The only public interface is the CLI:
 
 ```json
 {

@@ -1,6 +1,6 @@
 # @picloom/create-theme
 
-Create a standalone Picloom Vue 3 theme with Bun 1.4.3+.
+Create a standalone Picloom Vue 3 theme with Bun 1.4.4+.
 
 ```sh
 bun create @picloom/theme@0.1.2 ./my-theme
@@ -17,6 +17,6 @@ The target directory must not exist and its parent must exist. Follow the genera
 
 ## 中文
 
-使用 Bun 1.4.3+ 创建独立 Vue 3 主题。按上方命令创建工程、安装依赖、检查类型并构建。目标目录必须不存在，父目录必须存在。
+使用 Bun 1.4.4+ 创建独立 Vue 3 主题。按上方命令创建工程、安装依赖、检查类型并构建。目标目录必须不存在，父目录必须存在。
 
 开发服务器提供模拟预览。类型检查与构建分别执行；修改文件和安装 ZIP 的步骤见生成项目中的 README。

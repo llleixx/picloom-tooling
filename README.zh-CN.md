@@ -30,7 +30,7 @@ bun create @picloom/theme@0.1.2 ./my-theme
 
 ## 开发
 
-使用 Linux 中的 Bun 1.4.3+：
+使用 Linux 中的 Bun 1.4.4+：
 
 ```sh
 bun install --frozen-lockfile

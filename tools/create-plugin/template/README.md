@@ -1,6 +1,6 @@
 # My Picloom plugin
 
-A date-path plugin project for Bun 1.4.3+.
+A date-path plugin project for Bun 1.4.4+.
 
 ## Develop
 
@@ -27,7 +27,7 @@ After changes, increment `plugin.json.version`, rebuild and install. Select the 
 
 ## 中文
 
-使用 Bun 1.4.3+，依次运行上方安装、类型检查和构建命令。
+使用 Bun 1.4.4+，依次运行上方安装、类型检查和构建命令。
 
 - `plugin.json`：修改插件 ID 与版本。
 - `src/index.ts`：修改多语言名称、配置与路径生成。初始实现使用 UTC 日期，接受空配置 `{}`。
