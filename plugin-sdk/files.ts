@@ -80,7 +80,6 @@ export async function writeStream(
           "RESOURCE_LIMIT",
           "File exceeds size limit",
           false,
-          "notApplied",
         );
       let offset = 0;
       while (offset < value.length) {

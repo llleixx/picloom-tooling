@@ -96,19 +96,6 @@ export interface StoragePlugin extends Runtime {
     input: { operationId: string; storageKey: string; locator: Locator },
     context: Context,
   ): Promise<void>;
-  recoverWrite?(
-    input: {
-      operationId: string;
-      fileId: string;
-      storageKey: string;
-      expectedSize: number;
-      locator: Locator;
-    },
-    context: Context,
-  ): Promise<
-    | { status: "stored"; locator?: Locator }
-    | { status: "notStored" | "unknown" }
-  >;
   listFiles?(
     input: { scope?: string; cursor?: string; limit: number },
     context: Context,
@@ -248,8 +235,6 @@ export class PluginError extends Error {
     message: string,
     // Allows task retries; never inferred from code.
     public retryable = false,
-    // Use notApplied only when the operation is known not to have taken effect.
-    public outcome: "notApplied" | "unknown" = "unknown",
   ) {
     super(message);
     this.name = "PluginError";
@@ -260,7 +245,6 @@ export class PluginError extends Error {
 export function isPluginError(error: unknown): error is Error & {
   code: string;
   retryable: boolean;
-  outcome: "notApplied" | "unknown";
 } {
   if (!error || typeof error !== "object") return false;
   const e = error as Partial<PluginError>;
@@ -268,7 +252,6 @@ export function isPluginError(error: unknown): error is Error & {
     e.name === "PluginError" &&
     typeof e.message === "string" &&
     typeof e.code === "string" &&
-    typeof e.retryable === "boolean" &&
-    (e.outcome === "notApplied" || e.outcome === "unknown")
+    typeof e.retryable === "boolean"
   );
 }

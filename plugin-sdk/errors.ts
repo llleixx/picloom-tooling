@@ -1,4 +1,4 @@
-/** Public failure reasons shared by all plugins. Retry and outcome are independent. */
+/** Public failure reasons shared by all plugins. Retryability is explicit. */
 export const pluginErrorCodes = [
   // Persistent plugin settings are missing or invalid.
   "INVALID_CONFIG",
@@ -24,7 +24,7 @@ export const pluginErrorCodes = [
   "INVALID_DATA",
   // An upstream service failed without a more specific reason.
   "SERVICE",
-  // Unclassified failure. Not the same as an unknown write outcome.
+  // Unclassified failure.
   "FAILED",
 ] as const;
 export type PluginErrorCode = (typeof pluginErrorCodes)[number];
