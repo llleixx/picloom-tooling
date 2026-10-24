@@ -139,7 +139,18 @@ export interface Upload {
   error?: string;
   result?: { id: string; url: string };
 }
+export type OrganizationKind = "tags" | "collections";
+export interface OrganizationItem {
+  id: string;
+  name: string;
+}
+export interface OrganizationSelection {
+  tagIds: readonly string[];
+  collectionIds: readonly string[];
+}
 export interface Snapshot {
+  /** Initial classification for new queue entries. Empty for guests. */
+  organization: OrganizationSelection;
   page: Page;
   site: {
     name: string;
@@ -184,6 +195,15 @@ export interface ThemeContext {
   navigate(page: Page | "app"): void;
   selectProfile(id: string): void;
   refresh(): Promise<void>;
+  organization: {
+    /** These operations use the signed-in user's own scope. */
+    list(
+      kind: OrganizationKind,
+      query?: { q?: string; limit?: number; offset?: number },
+    ): Promise<{ items: OrganizationItem[]; total: number }>;
+    create(kind: OrganizationKind, name: string): Promise<OrganizationItem>;
+    select(selection: OrganizationSelection): void;
+  };
   uploads: {
     add(files: File[]): void;
     addUrls(urls: string[]): void;

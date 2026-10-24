@@ -4,6 +4,7 @@ import type {
   Page,
   Snapshot,
   ThemeContext,
+  OrganizationItem,
   Upload,
 } from "@picloom/theme-sdk";
 import { languages, messageText } from "./helpers";
@@ -27,6 +28,7 @@ export function createPreview(
   const timers = new Set<ReturnType<typeof setTimeout>>();
   const motion = matchMedia("(prefers-color-scheme: dark)");
   const state: Snapshot = {
+    organization: { tagIds: [], collectionIds: [] },
     page: location.pathname === "/login" ? "login" : "home",
     site: {
       name: "Preview gallery",
@@ -199,6 +201,13 @@ export function createPreview(
     emit();
   }
   motion.addEventListener("change", appearance);
+  const organizationItems: Record<"tags" | "collections", OrganizationItem[]> =
+    {
+      tags: [{ id: "mock-tag", name: "Sample tag / 示例标签" }],
+      collections: [
+        { id: "mock-collection", name: "Sample collection / 示例集合" },
+      ],
+    };
   const ctx: ThemeContext = {
     apiVersion: 1,
     config: copy(config),
@@ -265,6 +274,41 @@ export function createPreview(
     async refresh() {
       state.error = "";
       setScenario("ready");
+    },
+    organization: {
+      async list(kind, query = {}) {
+        if (!state.user) throw new Error("Sign in first / 请先登录");
+        const items = organizationItems[kind].filter((item) =>
+          item.name.toLowerCase().includes((query.q ?? "").toLowerCase()),
+        );
+        return {
+          items: copy(
+            items.slice(
+              query.offset ?? 0,
+              (query.offset ?? 0) + (query.limit ?? 50),
+            ),
+          ),
+          total: items.length,
+        };
+      },
+      async create(kind, name) {
+        if (!state.user) throw new Error("Sign in first / 请先登录");
+        const item = { id: crypto.randomUUID(), name: name.trim() };
+        if (!item.name) throw new Error("Name is required / 请填写名称");
+        if (
+          organizationItems[kind].some(
+            (value) => value.name.toLowerCase() === item.name.toLowerCase(),
+          )
+        )
+          throw new Error("Name already exists / 名称已存在");
+        organizationItems[kind].push(item);
+        return copy(item);
+      },
+      select(selection) {
+        if (!state.user) return;
+        state.organization = copy(selection);
+        emit();
+      },
     },
     uploads: {
       add(files) {
@@ -351,6 +395,7 @@ export function createPreview(
     },
     setUser(signedIn: boolean) {
       state.user = signedIn ? { name: "Preview user" } : null;
+      state.organization = { tagIds: [], collectionIds: [] };
       emit();
     },
     dispose() {

@@ -17,7 +17,7 @@ export default {
   configSchemaVersion: 1,
   async createInstance() {
     return {
-      async generate({ fileId, uploadedAt, metadata }) {
+      async generate({ record, metadata }) {
         const extensions: Record<string, string> = {
           "image/jpeg": "jpg",
           "image/png": "png",
@@ -29,11 +29,11 @@ export default {
         const extension = extensions[metadata.mimeType ?? ""];
         if (!extension)
           throw new PluginError("UNSUPPORTED", "Unsupported image format");
-        const date = new Date(uploadedAt)
+        const date = new Date(record.createdAt)
           .toISOString()
           .slice(0, 10)
           .replaceAll("-", "/");
-        return { logicalKey: `${date}/${fileId}.${extension}` };
+        return { logicalKey: `${date}/${record.id}.${extension}` };
       },
     };
   },

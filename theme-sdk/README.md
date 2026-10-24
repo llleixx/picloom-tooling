@@ -27,6 +27,18 @@ SDK snapshots and helpers are framework-independent. In Vue themes, assign each 
 
 Core errors and notifications in snapshots are translated at display time and update with the current language. Recognized error codes use core dictionaries; unknown errors preserve their original text. Themes continue to receive strings and do not need access to core translation keys. Language changes do not restart notification dismissal timers.
 
+Signed-in themes can use `organization.list(kind, query)` and `organization.create(kind, name)`
+with `kind: "tags" | "collections"` to search or create their own categories. Lists return
+`{ items, total }` and support `q`, `limit` (1–100, default 50), and `offset` (default 0).
+`organization.select({ tagIds, collectionIds })` updates `snapshot.organization`; each queue
+entry keeps its selection from `uploads.add()` or `uploads.addUrls()`. Hide category controls
+for guests. Category selection does not change the uploader or upload profile.
+
+登录后的主题可通过 `organization.list(kind, query)` 搜索、分页，通过
+`organization.create(kind, name)` 创建当前用户范围内的标签或集合；`kind` 为
+`tags` 或 `collections`。`organization.select({ tagIds, collectionIds })` 更新快照中的
+初始归类，上传入队时固定该选择。游客不显示归类选择；选择不会改变上传身份或配置。
+
 ## Documentation
 
 - [Quick start](https://llleixx.github.io/picloom/development/theme-tooling.html)

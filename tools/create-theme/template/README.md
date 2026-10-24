@@ -13,6 +13,8 @@ Open `http://127.0.0.1:5173/`; use `bun run dev --port 5174` to change the port.
 
 - `theme.json`: theme ID, version, localized text and configuration schema.
 - `src/Page.vue`, `src/style.css`: pages and styles, with hot updates.
+- `src/OrganizationPicker.vue`: signed-in tag and collection selection for new uploads.
+  登录用户可为新上传选择标签和集合，归类在入队时固定。
 - `src/entry.ts`: mounts the theme and disposes it on unmount.
 - `public/assets/`: package resources, read with `context.asset("assets/...")`.
 - `dev/config.json`: created on first preview from schema defaults; edit it to try configuration values. New defaults do not replace existing values.
