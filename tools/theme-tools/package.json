@@ -1,6 +1,6 @@
 {
   "name": "@picloom/theme-tools",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "license": "MIT",
   "description": "Local preview, build and ZIP packaging for Picloom themes",

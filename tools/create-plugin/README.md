@@ -3,7 +3,7 @@
 Create a standalone Picloom date-path plugin with Bun 1.4.4+.
 
 ```sh
-bun create @picloom/plugin@0.1.2 ./my-plugin
+bun create @picloom/plugin@0.1.3 ./my-plugin
 cd my-plugin
 bun install
 bun run typecheck

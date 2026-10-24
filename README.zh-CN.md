@@ -19,9 +19,9 @@
 常规开发直接使用 npm 脚手架，不需要 clone 本仓库：
 
 ```sh
-bun create @picloom/plugin@0.1.2 ./my-plugin
+bun create @picloom/plugin@0.1.3 ./my-plugin
 # 或创建主题
-bun create @picloom/theme@0.1.2 ./my-theme
+bun create @picloom/theme@0.1.3 ./my-theme
 ```
 
 进入生成目录运行 `bun install`，再分别执行 `bun run typecheck` 和 `bun run build`；主题还可运行 `bun run dev`。

@@ -1,7 +1,7 @@
 # @picloom/theme-tools
 
 Shared development CLI for Picloom themes. Requires Bun 1.4.4+ and Vite 8.
-Install with `bun add --dev @picloom/theme-tools@0.1.1`.
+Install with `bun add --dev @picloom/theme-tools@0.1.2`.
 
 ```json
 {

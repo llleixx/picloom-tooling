@@ -20,7 +20,7 @@
     },
     "plugin-sdk": {
       "name": "@picloom/plugin-sdk",
-      "version": "0.1.1",
+      "version": "0.2.0",
       "devDependencies": {
         "@types/bun": "1.3.10",
         "sharp": "0.34.5",
@@ -35,25 +35,25 @@
     },
     "theme-sdk": {
       "name": "@picloom/theme-sdk",
-      "version": "0.1.2",
+      "version": "0.2.0",
     },
     "tools/create-plugin": {
       "name": "@picloom/create-plugin",
-      "version": "0.1.2",
+      "version": "0.1.3",
       "bin": {
         "create-plugin": "./index.js",
       },
     },
     "tools/create-theme": {
       "name": "@picloom/create-theme",
-      "version": "0.1.2",
+      "version": "0.1.3",
       "bin": {
         "create-theme": "./index.js",
       },
     },
     "tools/plugin-tools": {
       "name": "@picloom/plugin-tools",
-      "version": "0.1.1",
+      "version": "0.1.2",
       "bin": {
         "picloom-plugin": "./dist/cli.js",
       },
@@ -63,7 +63,7 @@
     },
     "tools/theme-tools": {
       "name": "@picloom/theme-tools",
-      "version": "0.1.1",
+      "version": "0.1.2",
       "bin": {
         "picloom-theme": "./dist/cli.js",
       },
