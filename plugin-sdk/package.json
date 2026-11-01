@@ -1,6 +1,6 @@
 {
   "name": "@picloom/plugin-sdk",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Public types and helpers for Picloom plugins",
   "license": "MIT",
   "type": "module",

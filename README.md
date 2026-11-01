@@ -19,7 +19,7 @@ SDKs, build/preview tools and project generators for Picloom extension authors. 
 Use the npm creators directly; no checkout of this repository is required:
 
 ```sh
-bun create @picloom/plugin@0.1.3 ./my-plugin
+bun create @picloom/plugin@0.1.4 ./my-plugin
 # Or create a theme
 bun create @picloom/theme@0.1.3 ./my-theme
 ```

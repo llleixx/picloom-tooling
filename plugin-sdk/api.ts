@@ -34,9 +34,6 @@ export interface PipelineDataReader {
 export interface PipelineData extends PipelineDataReader {
   set(namespace: string, value: Json): void;
 }
-export interface CheckContext extends Context {
-  data: PipelineDataReader;
-}
 export interface PipelineContext extends Context {
   data: PipelineData;
 }
@@ -84,22 +81,17 @@ export interface OrganizationWriter extends OrganizationReader {
   ensureTag(input: { name: string }): Promise<OrganizationItem>;
   ensureCollection(input: { name: string }): Promise<OrganizationItem>;
 }
-export interface UploadCheckContext extends CheckContext {
-  readonly organization: OrganizationReader;
-}
 export interface UploadProcessContext extends PipelineContext {
   readonly organization: OrganizationWriter;
 }
 export interface PostSaveContext extends PipelineContext {
   readonly organization: OrganizationWriter;
 }
-export interface UploadCheckInput {
+export interface UploadProcessInput {
   readonly params: Parameters;
   readonly file: FileInput;
   readonly limits: { maxDimension: number; maxPixels: number };
   readonly record: FileContext;
-}
-export interface UploadProcessInput extends UploadCheckInput {
   createOutput(): Promise<Output>;
 }
 export interface Runtime {
@@ -159,19 +151,12 @@ export interface StoragePlugin extends Runtime {
     nextCursor: string | null;
   }>;
 }
-export type CheckResult =
-  | { status: "applicable" }
-  | { status: "noop" }
-  | { status: "unsupported"; reason?: string };
 export type UploadResult =
   | { status: "pass"; organization?: OrganizationUpdate }
   | { status: "replace"; output: Output; organization?: OrganizationUpdate }
-  | { status: "reject"; reason: string };
+  | { status: "reject"; reason: string }
+  | { status: "unsupported"; reason?: string };
 export interface UploadPlugin extends Runtime {
-  check(
-    input: UploadCheckInput,
-    context: UploadCheckContext,
-  ): Promise<CheckResult>;
   process(
     input: UploadProcessInput,
     context: UploadProcessContext,
@@ -180,18 +165,16 @@ export interface UploadPlugin extends Runtime {
 export type ImageProcessResult =
   | { status: "pass" }
   | { status: "replace"; output: Output }
-  | { status: "reject"; reason: string };
-export interface AccessCheckInput {
+  | { status: "reject"; reason: string }
+  | { status: "unsupported"; reason?: string };
+export interface AccessProcessorInput {
   readonly params: Parameters;
   readonly limits: { maxDimension: number; maxPixels: number };
   readonly metadata: Readonly<Metadata>;
   getFile(): Promise<FileInput>;
-}
-export interface AccessProcessorInput extends AccessCheckInput {
   createOutput(): Promise<Output>;
 }
 export interface AccessPlugin extends Runtime {
-  check(input: AccessCheckInput, context: CheckContext): Promise<CheckResult>;
   process(
     input: AccessProcessorInput,
     context: PipelineContext,
@@ -199,36 +182,41 @@ export interface AccessPlugin extends Runtime {
   cacheable?: boolean;
 }
 export type PostSaveDisposition = "pass" | "block" | "delete";
-export interface DispositionUpdate {
-  readonly value: PostSaveDisposition;
-  readonly mode?: "escalate" | "replace";
-}
-export interface PostSaveResult {
-  readonly disposition?: DispositionUpdate;
+interface PostSaveResultFields {
   readonly organization?: OrganizationUpdate;
   /** Compact file-related JSON summary; never include secrets or file bytes. */
   readonly details?: Config;
 }
-export interface PostSaveStepResult extends PostSaveResult {
+export type PostSaveResult = PostSaveResultFields &
+  (
+    | { readonly status: "pass" | "block" | "delete" }
+    /** Replaces the image record while keeping its public URL. */
+    | { readonly status: "replace"; readonly output: Output }
+  );
+export interface PostSaveStepResult extends PostSaveResultFields {
+  readonly status: PostSaveResult["status"];
   readonly stepId: string;
   readonly pluginId: string;
   readonly pluginVersion: string;
   readonly completedAt: number;
 }
+export interface PostSaveProcessInput {
+  readonly operationId: string;
+  readonly record: FileContext;
+  readonly publicPath: string;
+  /** Accumulated disposition before this step; does not end the pipeline. */
+  readonly currentDisposition: PostSaveDisposition;
+  /** Isolated snapshot of successfully completed steps in this attempt. */
+  readonly previousResults: readonly Readonly<PostSaveStepResult>[];
+  /** Relative when no site/image origin is configured. */
+  readonly url: string;
+  readonly file: FileInput;
+  readonly limits: { maxDimension: number; maxPixels: number };
+  createOutput(): Promise<Output>;
+}
 export interface PostSavePlugin extends Runtime {
-  execute(
-    input: {
-      readonly operationId: string;
-      readonly record: FileContext;
-      readonly publicPath: string;
-      /** Accumulated disposition before this step; does not end the pipeline. */
-      readonly currentDisposition: PostSaveDisposition;
-      /** Isolated snapshot of successfully completed steps in this attempt. */
-      readonly previousResults: readonly Readonly<PostSaveStepResult>[];
-      /** Relative when no site/image origin is configured. */
-      readonly url: string;
-      readonly file: FileInput;
-    },
+  process(
+    input: PostSaveProcessInput,
     context: PostSaveContext,
   ): Promise<PostSaveResult>;
 }
