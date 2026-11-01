@@ -186,6 +186,7 @@ export interface ThemeContext {
   config: Config;
   getSnapshot(): Snapshot;
   subscribe(listener: (snapshot: Snapshot) => void): () => void;
+  /** Resolve an unencoded relative package path to its resource URL. */
   asset(path: string): string;
   t(key: string, params?: Record<string, string | number>): string;
   /** Read current-language administrator text; missing or empty text never falls back. */

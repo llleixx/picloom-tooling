@@ -16,7 +16,7 @@ Open `http://127.0.0.1:5173/`; use `bun run dev --port 5174` to change the port.
 - `src/OrganizationPicker.vue`: signed-in tag and collection selection for new uploads.
   登录用户可为新上传选择标签和集合，归类在入队时固定。
 - `src/entry.ts`: mounts the theme and disposes it on unmount.
-- `public/assets/`: package resources, read with `context.asset("assets/...")`.
+- `public/assets/`: package resources, read with `context.asset("assets/...")`. Pass the literal relative path; URL encoding is automatic. Resource names cannot contain `#` or spaces.
 - `dev/config.json`: created on first preview from schema defaults; edit it to try configuration values. New defaults do not replace existing values.
 
 Keep `style.css` in the manifest's global `styles`; it contains CSS imported by the entry. Configuration and packaged resources are public.
@@ -42,7 +42,7 @@ Install `dist/<theme-id>-<version>.zip` as Owner in Picloom's Themes page, confi
 - `theme.json`：主题 ID、版本、多语言文案与配置 Schema。
 - `src/Page.vue`、`src/style.css`：页面与样式，支持热更新。
 - `src/entry.ts`：挂载主题并在卸载时清理资源。
-- `public/assets/`：包内资源，通过 `context.asset("assets/...")` 读取。
+- `public/assets/`：包内资源，通过 `context.asset("assets/...")` 读取。传入原始相对路径，URL 编码由宿主处理。资源名称不能包含 `#` 或空格。
 - `dev/config.json`：首次预览按 Schema 默认值创建，之后手动修改；新默认值不会覆盖已有配置。
 
 入口导入的 CSS 合并到 `style.css`，需保留清单中的全局样式声明。主题配置与包内资源可公开访问。

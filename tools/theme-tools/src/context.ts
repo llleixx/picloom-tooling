@@ -7,7 +7,7 @@ import type {
   OrganizationItem,
   Upload,
 } from "@picloom/theme-sdk";
-import { languages, messageText } from "./helpers";
+import { assetPath, languages, messageText } from "./helpers";
 export const scenarios = [
   "ready",
   "loading",
@@ -220,14 +220,11 @@ export function createPreview(
       };
     },
     asset(path) {
-      if (
-        !path ||
-        path.startsWith("/") ||
-        /[\\:?*<>"|]/.test(path) ||
-        path.split("/").some((part) => !part || part === "." || part === "..")
-      )
-        throw Error("Invalid package asset path");
-      return new URL("/" + path, location.origin).href;
+      if (!assetPath(path)) throw Error("Invalid package asset path");
+      return new URL(
+        "/" + path.split("/").map(encodeURIComponent).join("/"),
+        location.origin,
+      ).href;
     },
     t(key, params = {}) {
       return messageText(manifest, state.locale, key).replace(

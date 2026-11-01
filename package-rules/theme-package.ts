@@ -6,5 +6,5 @@ export const safeName = (v: unknown): v is string =>
 export const assetPath = (v: unknown): v is string =>
   typeof v === "string" &&
   v.length <= 240 &&
-  !/[\\:< >"|?*\x00-\x1f]/.test(v) &&
+  !/[\\:< >"|?#*\x00-\x1f\x7f]/.test(v) &&
   v.split("/").every((p) => !!p && p !== "." && p !== ".." && !/[. ]$/.test(p));
