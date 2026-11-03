@@ -1,0 +1,43 @@
+name: Publish npm package
+
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: Package directory to publish
+        type: choice
+        required: true
+        options:
+          - package-rules
+          - plugin-sdk
+          - theme-sdk
+          - tools/create-plugin
+          - tools/create-theme
+          - tools/plugin-tools
+          - tools/theme-tools
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.4
+      - run: bun install --frozen-lockfile
+      - run: bun run build
+      - run: bun run typecheck
+      - run: bun test ./tests
+      - name: Pack selected workspace
+        working-directory: ${{ inputs.package }}
+        run: bun pm pack --ignore-scripts --filename "$RUNNER_TEMP/package.tgz"
+      - name: Publish to npm
+        run: npm publish "$RUNNER_TEMP/package.tgz" --access public

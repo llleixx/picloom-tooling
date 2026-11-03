@@ -1,0 +1,82 @@
+name: Host integration
+on:
+  workflow_dispatch:
+    inputs:
+      host_ref:
+        description: Full 40-character commit SHA from llleixx/picloom
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: host-integration-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    env:
+      PICLOOM_TOOLING_DIR: ${{ github.workspace }}/tooling
+      TEST_FIXTURE_POSTGRES_URL: ""
+    steps:
+      - name: Validate host commit SHA
+        env:
+          HOST_REF: ${{ inputs.host_ref }}
+        run: |
+          if [[ ! "$HOST_REF" =~ ^[0-9a-fA-F]{40}$ ]]; then
+            echo "host_ref must be a full 40-character hexadecimal commit SHA" >&2
+            exit 1
+          fi
+      - name: Check out tooling
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: tooling
+          persist-credentials: false
+      - name: Check out host
+        uses: actions/checkout@v4
+        with:
+          repository: llleixx/picloom
+          ref: ${{ inputs.host_ref }}
+          path: host
+          persist-credentials: false
+      - name: Verify host checkout
+        env:
+          HOST_REF: ${{ inputs.host_ref }}
+        run: test "$(git -C host rev-parse HEAD)" = "${HOST_REF,,}"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.4
+      - name: Install tooling dependencies
+        working-directory: tooling
+        run: bun install --frozen-lockfile
+      - name: Build tooling packages
+        working-directory: tooling
+        run: bun run build
+      - name: Install host dependencies
+        working-directory: host
+        run: bun install --frozen-lockfile
+      - name: Install Chromium
+        working-directory: host
+        run: bunx playwright install --with-deps chromium
+      - name: Build host web application
+        working-directory: host
+        run: bun run build:web
+      - name: Check packed plugin tooling
+        working-directory: host
+        run: bun run test:plugin-tooling
+      - name: Check packed theme tooling
+        working-directory: host
+        run: bun run test:theme-tooling
+  result:
+    name: Host integration result
+    if: ${{ always() }}
+    needs: integration
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require successful integration
+        env:
+          INTEGRATION_RESULT: ${{ needs.integration.result }}
+        run: test "$INTEGRATION_RESULT" = success
