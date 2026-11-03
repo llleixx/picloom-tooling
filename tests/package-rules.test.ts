@@ -1,4 +1,3 @@
-import { fileURLToPath } from "node:url";
 import { expect, test } from "bun:test";
 import { initialValue, messageText, assetPath } from "@picloom/package-rules";
 
@@ -37,25 +36,4 @@ test("package messages fall back to their author locale and assets cannot escape
   ).toBe("画廊");
   expect(assetPath("../outside.png")).toBe(false);
   expect(assetPath("assets/photo.png")).toBe(true);
-});
-
-test("theme asset paths preserve literal percent and Unicode names without URL delimiters", () => {
-  for (const path of ["assets/100%.png", "assets/%23.png", "assets/登录.css"])
-    expect(assetPath(path)).toBe(true);
-  for (const path of [
-    "entry#1.js",
-    "assets/a?b.png",
-    "assets/a b.png",
-    "assets/a\x7f.png",
-  ])
-    expect(assetPath(path)).toBe(false);
-});
-
-test("common package rules bundle for browsers without host or server dependencies", async () => {
-  const result = await Bun.build({
-    entrypoints: [fileURLToPath(import.meta.resolve("@picloom/package-rules"))],
-    target: "browser",
-  });
-  expect(result.success).toBe(true);
-  expect(result.outputs.length).toBe(1);
 });

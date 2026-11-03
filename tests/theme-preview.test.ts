@@ -41,6 +41,7 @@ test("theme preview resolves literal package paths with the host's path rules", 
     }
     for (const path of [
       "assets/a#1.png",
+      "assets/a?b.png",
       "assets/a b.png",
       "../outside.png",
       "assets/a\x7f.png",
